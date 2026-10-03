@@ -1,0 +1,53 @@
+{
+  "releases": [
+    {
+      "version": 2,
+      "file": "fw_v2.bin",
+      "size": 909760,
+      "sha256": "e14753f79f9627a1e04a260fd05b43e32ba3d4eb785f984761f8067df61ca5f5",
+      "uploaded": "2026-10-02 18:10:30"
+    },
+    {
+      "version": 3,
+      "file": "fw_v3.bin",
+      "size": 909760,
+      "sha256": "e14753f79f9627a1e04a260fd05b43e32ba3d4eb785f984761f8067df61ca5f5",
+      "uploaded": "2026-10-02 18:13:18"
+    },
+    {
+      "version": 4,
+      "file": "fw_v4.bin",
+      "size": 909760,
+      "sha256": "e14753f79f9627a1e04a260fd05b43e32ba3d4eb785f984761f8067df61ca5f5",
+      "uploaded": "2026-10-02 18:15:06"
+    },
+    {
+      "version": 5,
+      "file": "fw_v5.bin",
+      "size": 909760,
+      "sha256": "e14753f79f9627a1e04a260fd05b43e32ba3d4eb785f984761f8067df61ca5f5",
+      "uploaded": "2026-10-02 18:16:41"
+    },
+    {
+      "version": 6,
+      "file": "fw_v6.bin",
+      "size": 909760,
+      "sha256": "e14753f79f9627a1e04a260fd05b43e32ba3d4eb785f984761f8067df61ca5f5",
+      "uploaded": "2026-10-02 18:18:13"
+    },
+    {
+      "version": 7,
+      "file": "fw_v7.bin",
+      "size": 909760,
+      "sha256": "ed6d8375628558b05cb2d11eaad96b3dc1b788f77dfa8b14a6053e3e2e150e5b",
+      "uploaded": "2026-10-02 18:22:05"
+    },
+    {
+      "version": 8,
+      "file": "fw_v8.bin",
+      "size": 909760,
+      "sha256": "9348a6d255c21a353eea96ca4a6a6344732e5da26553225706542fe022ef4c92",
+      "uploaded": "2026-10-02 21:22:26"
+    }
+  ]
+}

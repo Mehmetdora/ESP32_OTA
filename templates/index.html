@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESP32 OTA Sunucusu</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.5rem; }
+  .card { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1.2rem; }
+  label { display: block; margin-top: .7rem; font-weight: 600; }
+  input { padding: .4rem; width: 100%; box-sizing: border-box; }
+  button { margin-top: 1rem; padding: .6rem 1.2rem; cursor: pointer; }
+  .msg { padding: .6rem; border-radius: 6px; margin-bottom: 1rem; }
+  .ok { background: #d9f7d9; } .err { background: #fbd9d9; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  td, th { border-bottom: 1px solid #ddd; padding: .4rem; text-align: left; }
+  code { font-size: .75rem; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>ESP32 OTA Sunucusu</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for cat, m in messages %}<div class="msg {{ cat }}">{{ m }}</div>{% endfor %}
+{% endwith %}
+
+<div class="card">
+  <h2>Yayindaki surum</h2>
+  {% if latest %}
+    <p><b>Surum {{ latest.version }}</b> &middot; {{ latest.size }} bayt &middot; {{ latest.uploaded }}</p>
+    <code>sha256: {{ latest.sha256 }}</code>
+  {% else %}
+    <p>Henuz firmware yuklenmedi.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>Yeni firmware yukle</h2>
+  <form method="post" action="/upload" enctype="multipart/form-data">
+    <label>Firmware (.ino.bin)</label>
+    <input type="file" name="firmware" accept=".bin" required>
+    <label>Surum numarasi (bos birakirsan otomatik +1)</label>
+    <input type="number" name="version" min="1" placeholder="{{ (latest.version + 1) if latest else 1 }}">
+    <label>Yonetici sifresi</label>
+    <input type="password" name="password" required>
+    <button type="submit">Yukle</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Gecmis</h2>
+  <table>
+    <tr><th>Surum</th><th>Boyut</th><th>Tarih</th></tr>
+    {% for r in releases %}
+    <tr><td>{{ r.version }}</td><td>{{ r.size }}</td><td>{{ r.uploaded }}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+</body>
+</html>

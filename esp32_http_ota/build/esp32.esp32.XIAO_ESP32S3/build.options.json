@@ -1,0 +1,10 @@
+{
+  "additionalFiles": "",
+  "builtInLibrariesFolders": "/home/mehmet/.arduino15/libraries",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:XIAO_ESP32S3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=default,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=8M,PartitionScheme=default_8MB,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default",
+  "hardwareFolders": "/home/mehmet/.arduino15/packages/esp32/hardware/esp32/3.3.12,/home/mehmet/.arduino15/packages/esp32/hardware/esp32/3.3.12",
+  "otherLibrariesFolders": "/home/mehmet/Arduino/libraries",
+  "sketchLocation": "/home/mehmet/ESP32S3_Projects/ESP32 OTA/esp32_http_ota"
+}
