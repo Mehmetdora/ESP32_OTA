@@ -9,15 +9,17 @@
 
 // ======================= AYARLAR =======================
 // Admin panelde yukledigin "Version" ile BIREBIR ayni olmali (ornek: 1.0.3)
-#define FIRMWARE_VERSION "1.0.2"
+#define FIRMWARE_VERSION "1.0.4"
 
 const char *WIFI_SSID = "DORA";
 const char *WIFI_PASS = "12345678";
 
 const char *API_URL = "https://www.mehmetdora.me/api/esp32/firmware";
+const char *HEARTBEAT_URL = "https://www.mehmetdora.me/api/esp32/device/heartbeat";
+
 
 const uint32_t CHECK_INTERVAL_MS = 60000;   // kontrol araligi (60 sn)
-const uint32_t BLINK_MS = 2000;
+const uint32_t BLINK_MS = 1000;
 
 // 1 = sertifika dogrulamasi yok (kolay baslangic), 0 = ROOT_CA ile dogrula
 #define USE_INSECURE_TLS 1
@@ -253,6 +255,86 @@ void checkForUpdate() {
   downloadAndInstall(binUrl, sha);
 }
 
+String getDeviceId() {
+  uint64_t chipid = ESP.getEfuseMac();
+
+  char id[17];
+
+  snprintf(
+    id,
+    sizeof(id),
+    "%04X%08X",
+    (uint16_t)(chipid >> 32),
+    (uint32_t)chipid
+  );
+
+  return String(id);
+}
+
+void sendHeartbeat() {
+  if (WiFi.status() != WL_CONNECTED) {
+    return;
+  }
+
+  WiFiClientSecure client;
+  setupTLS(client);
+
+  HTTPClient http;
+
+  http.setTimeout(10000);
+
+  if (!http.begin(
+        client,
+        String(HEARTBEAT_URL)
+      )) {
+
+    Serial.println("Heartbeat HTTP baslatilamadi");
+    return;
+  }
+
+  http.addHeader(
+    "Content-Type",
+    "application/json"
+  );
+
+  http.addHeader(
+    "Accept",
+    "application/json"
+  );
+
+  String deviceId = getDeviceId();
+
+  JsonDocument doc;
+
+  doc["device_id"] = deviceId;
+  doc["firmware_version"] = FIRMWARE_VERSION;
+
+  String body;
+
+  serializeJson(doc, body);
+
+  int code = http.POST(body);
+
+  if (code == HTTP_CODE_OK) {
+
+    String response = http.getString();
+
+    Serial.printf(
+      "Heartbeat OK: %s\n",
+      response.c_str()
+    );
+
+  } else {
+
+    Serial.printf(
+      "Heartbeat hatasi, HTTP kodu: %d\n",
+      code
+    );
+  }
+
+  http.end();
+}
+
 void setup() {
   Serial.begin(115200);
   delay(1500);
@@ -273,6 +355,7 @@ void loop() {
   if (!firstCheckDone || millis() - lastCheck >= CHECK_INTERVAL_MS) {
     firstCheckDone = true;
     lastCheck = millis();
-    checkForUpdate();
+    checkForUpdate();   // aynı zaman aralığında hem ota firmware kontrolü sorgulanıyor hemde cihazın aktif olduğu gönderiliyor. 
+    sendHeartbeat();
   }
 }
